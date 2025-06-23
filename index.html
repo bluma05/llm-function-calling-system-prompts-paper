@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LLM + Function Calling + Tools + System Prompts | Scientific Paper Landing</title>
+    <!-- TailwindCSS CDN (Official) -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+    <link rel="icon" href="https://cdn.jsdelivr.net/gh/lucide-icons/lucide@latest/icons/book.svg">
+    <style>
+      html { scroll-behavior: smooth; }
+      body { font-family: 'Inter', 'Segoe UI', Arial, sans-serif; }
+    </style>
+    <script src="index.js"></script>
+  </head>
+  <body class="bg-gray-50 text-gray-900 font-sans">
+    <div class="flex min-h-screen">
+      <!-- Sidebar Navigation -->
+      <aside class="w-72 bg-slate-900 text-white flex flex-col px-6 py-8 border-r border-slate-200 sticky top-0 h-screen">
+        <h2 class="text-xl font-bold mb-8 tracking-wide">Scientific Paper</h2>
+        <nav class="flex flex-col gap-4 text-base">
+          <a href="#intro" class="hover:text-yellow-400">Introduction</a>
+          <a href="#llm" class="hover:text-yellow-400">LLM & Function Calling</a>
+          <a href="#system-prompts" class="hover:text-yellow-400">System Prompts</a>
+          <a href="#patterns" class="hover:text-yellow-400">Prompt Patterns</a>
+          <a href="#tools" class="hover:text-yellow-400">Tools Integration</a>
+          <a href="#agents" class="hover:text-yellow-400">Agent Examples</a>
+          <a href="#guides" class="hover:text-yellow-400">Guides & Templates</a>
+          <a href="#usecases" class="hover:text-yellow-400">Use Cases</a>
+          <a href="#references" class="hover:text-yellow-400">References</a>
+        </nav>
+      </aside>
+      <!-- Main Content -->
+      <main class="flex-1 px-10 py-12 max-w-4xl mx-auto">
+        <header class="mb-12">
+          <h1 class="text-4xl font-extrabold text-slate-900 mb-2">LLM + Function Calling + Tools + System Prompts</h1>
+          <p class="text-lg text-slate-600">A Scientific Approach to Agentic AI, Prompt Engineering, and Modular Tooling</p>
+        </header>
+        <section id="intro" class="mb-12">
+          <h2 class="text-2xl font-bold border-l-4 border-yellow-400 pl-3 mb-4">Introduction</h2>
+          <div class="prose prose-lg max-w-none bg-white rounded-lg shadow p-6 mb-4 border border-slate-200">
+            <p class="mb-2">Welcome to the ultimate guide for building <strong>LLM-powered agents</strong> with <strong>function calling</strong>, <strong>modular tools</strong>, and <strong>advanced system prompts</strong>. This landing page is designed as a scientific paper, providing not only theory but also actionable steps, templates, and best practices for developers who want to create robust, safe, and highly personalized AI agents.</p>
+            <ul>
+              <li><strong>LLM (Large Language Model):</strong> Foundation for natural language understanding and generation. Modern LLMs (e.g., GPT, Claude, Gemini) can be extended with custom instructions and system prompts.</li>
+              <li><strong>Function Calling:</strong> Mechanism for LLMs to invoke external tools, APIs, or system functions. Enables agents to go beyond text, acting on the world and orchestrating workflows.</li>
+              <li><strong>System Prompts:</strong> The "operating system" of your agent, defining its identity, boundaries, and behavior. System prompts encode philosophy, restrictions, and best practices.</li>
+              <li><strong>Agent Personalization:</strong> Techniques to create unique, goal-driven, and safe agents for any use case. Includes persona, modularity, fallback, and explicit reasoning.</li>
+            </ul>
+            <div class="mt-4 p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded">
+              <strong>Why this matters:</strong> Combining these elements enables the creation of agents that are not only smart, but also actionable, safe, and tailored to your needs. <br>
+              <span class="text-slate-700">This guide will help you design, implement, and deploy your own LLM agents with best-in-class prompt engineering and tool integration.</span>
+            </div>
+            <div class="mt-6 p-4 bg-blue-50 border-l-4 border-blue-400 rounded">
+              <strong>Quick Start:</strong>
+              <ol class="list-decimal ml-6 mt-2">
+                <li>Define your agent's <strong>identity</strong> and <strong>purpose</strong> in a system prompt.</li>
+                <li>List the <strong>tools</strong> and <strong>APIs</strong> your agent can use (function calling schemas).</li>
+                <li>Set <strong>restrictions</strong> and <strong>security boundaries</strong> (never expose secrets, never run destructive actions without confirmation).</li>
+                <li>Iterate with <strong>stepwise reasoning</strong> and <strong>feedback loops</strong> for robust results.</li>
+                <li>Deploy and monitor your agent, refining prompts and tools as needed.</li>
+              </ol>
+            </div>
+          </div>
+        </section>
+        <section id="llm" class="mb-12">
+          <h2 class="text-2xl font-bold border-l-4 border-yellow-400 pl-3 mb-4">LLM & Function Calling</h2>
+          <div class="prose prose-lg max-w-none bg-white rounded-lg shadow p-6 border border-slate-200">
+            <h3 class="text-xl font-semibold mb-2">Architecture & Flow</h3>
+            <p>Function calling allows LLMs to interact with the world by invoking external tools, APIs, or system functions. The typical flow is:</p>
+            <ol class="list-decimal ml-6 mb-4">
+              <li>User sends a request or task to the agent</li>
+              <li>LLM analyzes the request and determines if a tool/function call is needed</li>
+              <li>LLM emits a function call schema (usually JSON) describing the tool and parameters</li>
+              <li>The orchestrator or runtime executes the tool and returns the result to the LLM</li>
+              <li>LLM integrates the result and continues reasoning or responds to the user</li>
+            </ol>
+            <div class="mt-4 p-4 bg-blue-50 border-l-4 border-blue-400 rounded">
+              <strong>Example Function Calling Schema (OpenAI):</strong>
+              <pre class="bg-slate-800 text-yellow-200 rounded p-4 overflow-x-auto text-sm mt-2">{
+  "tool": "run_shell_command",
+  "params": {
+    "command": "ls -la"
+  }
+}</pre>
+            </div>
+            <div class="mt-4 p-4 bg-green-50 border-l-4 border-green-400 rounded">
+              <strong>Best Practices:</strong>
+              <ul class="list-disc ml-6 mt-2">
+                <li>Always validate tool parameters and schemas before execution</li>
+                <li>Never expose secrets or sensitive data in function calls</li>
+                <li>Implement permission boundaries and confirmation for destructive actions</li>
+                <li>Log all tool invocations for audit and debugging</li>
+                <li>Design tools to be modular and composable</li>
+              </ul>
+            </div>
+            <div class="mt-4 p-4 bg-red-50 border-l-4 border-red-400 rounded">
+              <strong>Common Pitfalls:</strong>
+              <ul class="list-disc ml-6 mt-2">
+                <li>Unvalidated or unsafe tool parameters</li>
+                <li>Over-permissive tool access (no boundaries)</li>
+                <li>LLM hallucinating tool names or parameters</li>
+                <li>Missing feedback loop after tool execution</li>
+              </ul>
+            </div>
+            <div class="mt-4 p-4 bg-slate-100 border-l-4 border-slate-400 rounded">
+              <strong>Further Reading:</strong>
+              <ul class="list-disc ml-6 mt-2">
+                <li><a href="https://platform.openai.com/docs/guides/function-calling" class="text-blue-600 hover:underline">OpenAI Function Calling Guide</a></li>
+                <li><a href="https://arxiv.org/abs/2303.11366" class="text-blue-600 hover:underline">ReAct: Synergizing Reasoning and Acting in Language Models</a></li>
+                <li><a href="https://github.com/microsoft/semantic-kernel" class="text-blue-600 hover:underline">Microsoft Semantic Kernel</a></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+        <section id="system-prompts" class="mb-12">
+          <h2 class="text-2xl font-bold border-l-4 border-yellow-400 pl-3 mb-4">System Prompts</h2>
+          <div class="prose prose-lg max-w-none bg-white rounded-lg shadow p-6 border border-slate-200">
+            <h3 class="text-xl font-semibold mb-2">Identity, Philosophy & Boundaries</h3>
+            <p>System prompts define the agent's identity, philosophy, and operational boundaries. They encode the agent's persona, restrictions, and best practices. Examples from real-world agents:</p>
+            <pre class="bg-slate-800 text-yellow-200 rounded p-4 overflow-x-auto text-sm mt-2">{
+  "identity": "Devin AI",
+  "purpose": "Autonomous coding assistant",
+  "principles": ["Stepwise reasoning", "Security-first", "Transparency"],
+  "restrictions": ["Never expose secrets", "Never run destructive actions without confirmation"]
+}
+</pre>
+            <pre class="bg-slate-800 text-yellow-200 rounded p-4 overflow-x-auto text-sm mt-2">{
+  "identity": "Manus Agent",
+  "purpose": "Multi-tool orchestrator",
+  "principles": ["Explicit tool use", "Iterative planning", "Rollback support"],
+  "restrictions": ["No direct file deletion", "Always log tool calls"]
+}
+</pre>
+            <div class="mt-4 p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded">
+              <strong>Best Practices:</strong>
+              <ul class="list-disc ml-6 mt-2">
+                <li>Define clear agent identity and purpose</li>
+                <li>Explicitly list allowed tools and APIs</li>
+                <li>Set strict boundaries for security and privacy</li>
+                <li>Document fallback and error recovery strategies</li>
+                <li>Enforce structured, scientific communication</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+        <section id="patterns" class="mb-12">
+          <h2 class="text-2xl font-bold border-l-4 border-yellow-400 pl-3 mb-4">Prompt Patterns</h2>
+          <div class="prose prose-lg max-w-none bg-white rounded-lg shadow p-6 border border-slate-200">
+            <h3 class="text-xl font-semibold mb-2">Interaction & Reasoning Patterns</h3>
+            <p>Modern agents use explicit stepwise reasoning, modular tool calls, and feedback loops. Common patterns include:</p>
+            <ul>
+              <li><strong>Sequential Thinking:</strong> <code>&lt;sequential-thinking&gt;</code> blocks for explicit reasoning</li>
+              <li><strong>Tool Call Schema:</strong> JSON/XML schemas for tool invocation</li>
+              <li><strong>Fallback & Recovery:</strong> Policies for error handling and rollback</li>
+              <li><strong>Multi-agent Orchestration:</strong> Dispatcher core for routing tasks</li>
+            </ul>
+            <div class="mt-4 p-4 bg-blue-50 border-l-4 border-blue-400 rounded">
+              <strong>Example Sequential Reasoning:</strong>
+              <pre class="bg-slate-800 text-yellow-200 rounded p-4 overflow-x-auto text-sm mt-2">{
+  "step": 1,
+  "thought": "Analyze the user request and decompose into subtasks",
+  "tools": ["files", "shell", "notion"],
+  "next": "Plan tool usage and execution order"
+}
+</pre>
+            </div>
+          </div>
+        </section>
+        <section id="tools" class="mb-12">
+          <h2 class="text-2xl font-bold border-l-4 border-yellow-400 pl-3 mb-4">Tools Integration</h2>
+          <div class="prose prose-lg max-w-none bg-white rounded-lg shadow p-6 border border-slate-200">
+            <h3 class="text-xl font-semibold mb-2">Modular Tooling & Security</h3>
+            <p>Agents integrate modular tools for file, shell, API, and external system access. Security is enforced by schemas, parameter validation, and explicit user confirmation for critical actions.</p>
+            <ul>
+              <li>Never expose secrets or credentials in tool calls</li>
+              <li>Always validate parameters before execution</li>
+              <li>Log all tool invocations for audit and debugging</li>
+              <li>Design tools to be composable and isolated</li>
+            </ul>
+          </div>
+        </section>
+        <section id="agents" class="mb-12">
+          <h2 class="text-2xl font-bold border-l-4 border-yellow-400 pl-3 mb-4">Agent Examples</h2>
+          <div class="prose prose-lg max-w-none bg-white rounded-lg shadow p-6 border border-slate-200">
+            <h3 class="text-xl font-semibold mb-2">Real-World System Prompts</h3>
+            <ul>
+              <li><strong>BluMA:</strong> Autonomous dev agent with enforced tool boundaries and explicit notebook reasoning</li>
+              <li><strong>Cursor:</strong> Editor agent with stepwise planning and code manipulation</li>
+              <li><strong>Devin:</strong> Coding assistant with multi-step task decomposition and rollback</li>
+              <li><strong>Manus:</strong> Multi-tool orchestrator with modular prompt structure</li>
+              <li><strong>Same.dev:</strong> Security-focused agent with strict privacy policies</li>
+            </ul>
+            <div class="mt-4 p-4 bg-slate-100 border-l-4 border-slate-400 rounded">
+              <strong>References:</strong>
+              <ul class="list-disc ml-6 mt-2">
+                <li><a href="https://arxiv.org/abs/2303.11366" class="text-blue-600 hover:underline">ReAct: Synergizing Reasoning and Acting in Language Models</a></li>
+                <li><a href="https://github.com/openai/openai-cookbook/blob/main/examples/Function_calling_with_OpenAI_API.ipynb" class="text-blue-600 hover:underline">OpenAI Function Calling Cookbook</a></li>
+                <li><a href="https://github.com/Significant-Gravitas/Auto-GPT" class="text-blue-600 hover:underline">Auto-GPT</a></li>
+                <li><a href="https://github.com/microsoft/semantic-kernel" class="text-blue-600 hover:underline">Microsoft Semantic Kernel</a></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+        <section id="guides" class="mb-12">
+          <h2 class="text-2xl font-bold border-l-4 border-yellow-400 pl-3 mb-4">Guides & Templates</h2>
+          <div class="prose prose-lg max-w-none bg-white rounded-lg shadow p-6 border border-slate-200">
+            <h3 class="text-xl font-semibold mb-2">How to Build Your Own Agent</h3>
+            <ol class="list-decimal ml-6 mt-2">
+              <li>Define agent identity, purpose, and boundaries in a system prompt</li>
+              <li>List allowed tools and APIs with schemas</li>
+              <li>Set up stepwise reasoning and feedback loops</li>
+              <li>Implement security and logging for all tool calls</li>
+              <li>Test, iterate, and document agent behavior</li>
+            </ol>
+            <div class="mt-4 p-4 bg-green-50 border-l-4 border-green-400 rounded">
+              <strong>Template System Prompt:</strong>
+              <pre class="bg-slate-800 text-yellow-200 rounded p-4 overflow-x-auto text-sm mt-2">{
+  "identity": "Your Agent Name",
+  "purpose": "Describe the agent's main goal",
+  "principles": ["Stepwise reasoning", "Security-first", "Transparency"],
+  "tools": ["Shell", "File System", "Web API"],
+  "restrictions": ["Never expose secrets", "Never execute destructive actions without confirmation"]
+}
+</pre>
+            </div>
+          </div>
+        </section>
+        <section id="usecases" class="mb-12">
+          <h2 class="text-2xl font-bold border-l-4 border-yellow-400 pl-3 mb-4">Use Cases</h2>
+          <div class="prose prose-lg max-w-none bg-white rounded-lg shadow p-6 border border-slate-200">
+            <h3 class="text-xl font-semibold mb-2">Applications of Agentic AI</h3>
+            <ul>
+              <li>Autonomous coding assistants</li>
+              <li>Scientific research agents</li>
+              <li>DevOps and infrastructure orchestration</li>
+              <li>Personalized productivity tools</li>
+              <li>Secure multi-agent systems</li>
+            </ul>
+          </div>
+        </section>
+        <section id="references" class="mb-12">
+          <h2 class="text-2xl font-bold border-l-4 border-yellow-400 pl-3 mb-4">References</h2>
+          <div class="prose prose-lg max-w-none bg-white rounded-lg shadow p-6 border border-slate-200">
+            <ul>
+              <li><a href="https://arxiv.org/abs/2303.11366" class="text-blue-600 hover:underline">ReAct: Synergizing Reasoning and Acting in Language Models</a></li>
+              <li><a href="https://github.com/openai/openai-cookbook/blob/main/examples/Function_calling_with_OpenAI_API.ipynb" class="text-blue-600 hover:underline">OpenAI Function Calling Cookbook</a></li>
+              <li><a href="https://github.com/Significant-Gravitas/Auto-GPT" class="text-blue-600 hover:underline">Auto-GPT</a></li>
+              <li><a href="https://github.com/microsoft/semantic-kernel" class="text-blue-600 hover:underline">Microsoft Semantic Kernel</a></li>
+            </ul>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
