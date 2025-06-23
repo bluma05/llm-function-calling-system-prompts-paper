@@ -20,11 +20,22 @@ This project delivers a scientific-style landing page that documents and demonst
 - Guides & Templates
 - Use Cases
 - References
+- Python LLM Tool Example
 
 ## Usage
 1. Clone or download this repository
 2. Open `index.html` in your browser
 3. Explore the scientific documentation and examples
+
+## Deploy
+
+This project is static and can be deployed on GitHub Pages, Vercel, Netlify, or any static host. See `deploy_instructions.md` for step-by-step deploy instructions.
+
+### Quick Local Preview
+```sh
+python -m http.server 8080
+# Then open http://localhost:8080
+```
 
 ## Technologies
 - HTML5
@@ -57,65 +68,7 @@ This project delivers a scientific-style landing page that documents and demonst
 
 ## Python Example: LLM with Tool Calling
 
-A fully functional script using OpenAI's function calling to execute a shell command as a tool:
-
-```python
-import os
-import openai
-import subprocess
-from dotenv import load_dotenv
-
-load_dotenv()
-openai.api_key = os.getenv("OPENAI_API_KEY")
-
-functions = [
-    {
-        "name": "run_shell_command",
-        "description": "Run a shell command and return its output.",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "command": {"type": "string", "description": "The shell command to execute."}
-            },
-            "required": ["command"]
-        }
-    }
-]
-
-def run_shell_command(command: str) -> str:
-    try:
-        result = subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT, text=True, timeout=10)
-        return result.strip()
-    except Exception as e:
-        return f"Error: {e}"
-
-def main():
-    user_prompt = "List all files in the current directory."
-    messages = [
-        {"role": "system", "content": "You are an AI agent with access to a shell tool. Use the tool to answer user requests that require system access."},
-        {"role": "user", "content": user_prompt}
-    ]
-    response = openai.ChatCompletion.create(
-        model="gpt-4o",
-        messages=messages,
-        functions=functions,
-        function_call="auto"
-    )
-    message = response["choices"][0]["message"]
-    if message.get("function_call"):
-        func_name = message["function_call"]["name"]
-        args = eval(message["function_call"]["arguments"])
-        if func_name == "run_shell_command":
-            output = run_shell_command(args["command"])
-            print(f"\n[TOOL OUTPUT]\n{output}\n")
-        else:
-            print("Unknown tool requested.")
-    else:
-        print(message["content"])
-
-if __name__ == "__main__":
-    main()
-```
+A fully functional script using OpenAI's function calling to execute a shell command as a tool. See the landing page for a copyable, highlighted version.
 
 ## System Prompt Techniques (Context7)
 
@@ -123,7 +76,7 @@ See `CONTEXT7_TECHNIQUES.md` for a summary of advanced prompt patterns, tool sch
 
 ## CI/CD
 
-This repo includes a GitHub Actions workflow for linting and testing Python scripts (see `.github/workflows/ci.yml`).
+This repo inclui um workflow GitHub Actions para lint e teste automático de scripts Python (veja `.github/workflows/ci.yml`).
 
 ## References
 - [Landing Orquestração IA (GitHub)](https://github.com/bluma05/landing-orquestracao-ia)
