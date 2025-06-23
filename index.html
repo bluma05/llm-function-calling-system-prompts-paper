@@ -1,235 +1,499 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BluMA LLM Orchestration – System Prompts, Tools & Agents</title>
+  <title>LLM + Function Calling + Tools + System Prompts | Scientific Paper Landing</title>
+  <!-- TailwindCSS CDN (Official) -->
   <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
-  <link rel="icon" href="https://cdn.jsdelivr.net/gh/lucide-icons/lucide@latest/icons/brain-circuit.svg">
+  <link rel="icon" href="https://cdn.jsdelivr.net/gh/lucide-icons/lucide@latest/icons/book.svg">
   <style>
-    html { scroll-behavior: smooth; }
-    body { font-family: 'Fira Mono', 'Inter', 'Segoe UI', Arial, sans-serif; }
-    .gradient-bg {
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #facc15 100%);
+    html {
+      scroll-behavior: smooth;
     }
-    .glass {
-      background: rgba(255,255,255,0.85);
-      backdrop-filter: blur(8px);
-      border-radius: 1.5rem;
-      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+
+    body {
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
     }
-    .section-title {
-      font-family: 'Fira Mono', monospace;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-    .frame {
-      border: 2px solid #facc15;
-      border-radius: 1.25rem;
-      background: linear-gradient(90deg, #fefce8 60%, #facc15 100%);
-      box-shadow: 0 2px 16px 0 rgba(250,204,21,0.08);
-    }
-    .code-copy-btn {
-      position: absolute;
-      right: 1rem;
-      top: 1rem;
-      z-index: 10;
-      padding: 0.25rem 0.75rem;
-      background: #facc15;
-      color: #1e293b;
-      border-radius: 0.5rem;
-      font-size: 0.85rem;
-      font-weight: bold;
-      box-shadow: 0 2px 8px 0 rgba(250,204,21,0.12);
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .code-copy-btn:hover { background: #fde047; }
   </style>
 </head>
-<body class="gradient-bg min-h-screen text-slate-900">
-  <div class="max-w-7xl mx-auto px-4 py-10">
-    <header class="mb-16 flex flex-col items-center">
-      <div class="flex items-center gap-4 mb-4">
-        <img src="https://cdn.jsdelivr.net/gh/lucide-icons/lucide@latest/icons/brain-circuit.svg" class="w-12 h-12" alt="BluMA" />
-        <h1 class="text-5xl font-extrabold tracking-tight text-slate-900 drop-shadow section-title">BluMA LLM Orchestration</h1>
-      </div>
-      <p class="text-xl text-slate-700 max-w-2xl text-center">A new era for agentic AI: system prompts, function calling, modular tools, and orchestration patterns. Scientific, visual, and hands-on.</p>
-    </header>
-    <nav class="flex flex-wrap gap-4 justify-center mb-12">
-      <a href="#context7" class="px-4 py-2 rounded-lg font-bold bg-yellow-400 text-slate-900 shadow hover:bg-yellow-300 transition">Context7 Techniques</a>
-      <a href="#system-prompt" class="px-4 py-2 rounded-lg font-bold bg-yellow-400 text-slate-900 shadow hover:bg-yellow-300 transition">System Prompt Example</a>
-      <a href="#python-llm-tool" class="px-4 py-2 rounded-lg font-bold bg-yellow-400 text-slate-900 shadow hover:bg-yellow-300 transition">Python LLM Tool</a>
-      <a href="#sections" class="px-4 py-2 rounded-lg font-bold bg-yellow-400 text-slate-900 shadow hover:bg-yellow-300 transition">All Sections</a>
-    </nav>
-    <section id="context7" class="mb-16">
-      <div class="glass p-8 frame">
-        <h2 class="text-2xl font-bold section-title mb-4">Context7 System Prompt Techniques</h2>
-        <ul class="list-disc ml-8 text-lg mb-4">
-          <li><b>Explicit Tool Invocation:</b> Use XML/JSON schemas to define tool calls.<br>
-            <code class="block bg-slate-900 text-yellow-200 rounded p-2 my-2">&lt;read_file&gt;
-  &lt;path&gt;src/main.js&lt;/path&gt;
-&lt;/read_file&gt;</code>
-          </li>
-          <li><b>Stepwise Reasoning:</b> Structure agent thinking in explicit steps.<br>
-            <code class="block bg-slate-900 text-yellow-200 rounded p-2 my-2">{
+
+<body class="bg-gray-50 text-gray-900 font-sans">
+  <div class="flex min-h-screen">
+    <!-- Sidebar Navigation -->
+    <aside class="w-72 bg-slate-900 text-white flex flex-col px-6 py-8 border-r border-slate-200 sticky top-0 h-screen">
+      <h2 class="text-xl font-bold mb-8 tracking-wide">Scientific Paper</h2>
+      <nav class="flex flex-col gap-4 text-base">
+        <a href="#intro" class="hover:text-yellow-400">Introduction</a>
+        <a href="#llm" class="hover:text-yellow-400">LLM & Function Calling</a>
+        <a href="#system-prompts" class="hover:text-yellow-400">System Prompts</a>
+        <a href="#patterns" class="hover:text-yellow-400">Prompt Patterns</a>
+        <a href="#tools" class="hover:text-yellow-400">Tools Integration</a>
+        <a href="#agents" class="hover:text-yellow-400">Agent Examples</a>
+        <a href="#guides" class="hover:text-yellow-400">Guides & Templates</a>
+        <a href="#usecases" class="hover:text-yellow-400">Use Cases</a>
+        <a href="#references" class="hover:text-yellow-400">References</a>
+      </nav>
+    </aside>
+    <!-- Main Content -->
+    <main class="flex-1 px-10 py-12 max-w-4xl mx-auto">
+      <header class="mb-12">
+        <h1 class="text-4xl font-extrabold text-slate-900 mb-2">LLM + Function Calling + Tools + System Prompts</h1>
+        <p class="text-lg text-slate-600">A Scientific Approach to Agentic AI, Prompt Engineering, and Modular Tooling
+        </p>
+      </header>
+      <section id="intro" class="mb-12">
+        <h2 class="text-2xl font-bold border-l-4 border-yellow-400 pl-3 mb-4">Introduction</h2>
+        <div class="prose prose-lg max-w-none bg-white rounded-lg shadow p-6 mb-4 border border-slate-200">
+          <p class="mb-2">Welcome to the ultimate guide for building <strong>LLM-powered agents</strong> with
+            <strong>function calling</strong>, <strong>modular tools</strong>, and <strong>advanced system
+              prompts</strong>. This landing page is designed as a scientific paper, providing not only theory but also
+            actionable steps, templates, and best practices for developers who want to create robust, safe, and highly
+            personalized AI agents.</p>
+          <ul>
+            <li><strong>LLM (Large Language Model):</strong> Foundation for natural language understanding and
+              generation. Modern LLMs (e.g., GPT, Claude, Gemini) can be extended with custom instructions and system
+              prompts.</li>
+            <li><strong>Function Calling:</strong> Mechanism for LLMs to invoke external tools, APIs, or system
+              functions. Enables agents to go beyond text, acting on the world and orchestrating workflows.</li>
+            <li><strong>System Prompts:</strong> The "operating system" of your agent, defining its identity,
+              boundaries, and behavior. System prompts encode philosophy, restrictions, and best practices.</li>
+            <li><strong>Agent Personalization:</strong> Techniques to create unique, goal-driven, and safe agents for
+              any use case. Includes persona, modularity, fallback, and explicit reasoning.</li>
+          </ul>
+          <div class="mt-4 p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded">
+            <strong>Why this matters:</strong> Combining these elements enables the creation of agents that are not only
+            smart, but also actionable, safe, and tailored to your needs. <br>
+            <span class="text-slate-700">This guide will help you design, implement, and deploy your own LLM agents with
+              best-in-class prompt engineering and tool integration.</span>
+          </div>
+          <div class="mt-6 p-4 bg-blue-50 border-l-4 border-blue-400 rounded">
+            <strong>Quick Start:</strong>
+            <ol class="list-decimal ml-6 mt-2">
+              <li>Define your agent's <strong>identity</strong> and <strong>purpose</strong> in a system prompt.</li>
+              <li>List the <strong>tools</strong> and <strong>APIs</strong> your agent can use (function calling
+                schemas).</li>
+              <li>Set <strong>restrictions</strong> and <strong>security boundaries</strong> (never expose secrets,
+                never run destructive actions without confirmation).</li>
+              <li>Iterate with <strong>stepwise reasoning</strong> and <strong>feedback loops</strong> for robust
+                results.</li>
+              <li>Deploy and monitor your agent, refining prompts and tools as needed.</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+      <section id="llm" class="mb-12">
+        <h2 class="text-2xl font-bold border-l-4 border-yellow-400 pl-3 mb-4">LLM & Function Calling</h2>
+        <div class="prose prose-lg max-w-none bg-white rounded-lg shadow p-6 border border-slate-200">
+          <h3 class="text-xl font-semibold mb-2">Architecture & Flow</h3>
+          <p>Function calling allows LLMs to interact with the world by invoking external tools, APIs, or system
+            functions. The typical flow is:</p>
+          <ol class="list-decimal ml-6 mb-4">
+            <li>User sends a request or task to the agent</li>
+            <li>LLM analyzes the request and determines if a tool/function call is needed</li>
+            <li>LLM emits a function call schema (usually JSON) describing the tool and parameters</li>
+            <li>The orchestrator or runtime executes the tool and returns the result to the LLM</li>
+            <li>LLM integrates the result and continues reasoning or responds to the user</li>
+          </ol>
+          <div class="mt-4 p-4 bg-blue-50 border-l-4 border-blue-400 rounded">
+            <strong>Example Function Calling Schema (OpenAI):</strong>
+            <pre class="bg-slate-800 text-yellow-200 rounded p-4 overflow-x-auto text-sm mt-2">{
+  "tool": "run_shell_command",
+  "params": {
+    "command": "ls -la"
+  }
+}</pre>
+          </div>
+          <div class="mt-4 p-4 bg-green-50 border-l-4 border-green-400 rounded">
+            <strong>Best Practices:</strong>
+            <ul class="list-disc ml-6 mt-2">
+              <li>Always validate tool parameters and schemas before execution</li>
+              <li>Never expose secrets or sensitive data in function calls</li>
+              <li>Implement permission boundaries and confirmation for destructive actions</li>
+              <li>Log all tool invocations for audit and debugging</li>
+              <li>Design tools to be modular and composable</li>
+            </ul>
+          </div>
+          <div class="mt-4 p-4 bg-red-50 border-l-4 border-red-400 rounded">
+            <strong>Common Pitfalls:</strong>
+            <ul class="list-disc ml-6 mt-2">
+              <li>Unvalidated or unsafe tool parameters</li>
+              <li>Over-permissive tool access (no boundaries)</li>
+              <li>LLM hallucinating tool names or parameters</li>
+              <li>Missing feedback loop after tool execution</li>
+            </ul>
+          </div>
+          <div class="mt-4 p-4 bg-slate-100 border-l-4 border-slate-400 rounded">
+            <strong>Further Reading:</strong>
+            <ul class="list-disc ml-6 mt-2">
+              <li><a href="https://platform.openai.com/docs/guides/function-calling"
+                  class="text-blue-600 hover:underline">OpenAI Function Calling Guide</a></li>
+              <li><a href="https://arxiv.org/abs/2303.11366" class="text-blue-600 hover:underline">ReAct: Synergizing
+                  Reasoning and Acting in Language Models</a></li>
+              <section id="system-prompts" class="mb-12">
+                <h2 class="text-2xl font-bold border-l-4 border-yellow-400 pl-3 mb-4">System Prompts</h2>
+                <div class="prose prose-lg max-w-none bg-white rounded-lg shadow p-6 border border-slate-200">
+                  <h3 class="text-xl font-semibold mb-2">Identity, Philosophy & Boundaries</h3>
+                  <p>System prompts define the agent's identity, philosophy, and operational boundaries. They encode the
+                    agent's persona, restrictions, and best practices. Examples from real-world agents:</p>
+                  <pre class="bg-slate-800 text-yellow-200 rounded p-4 overflow-x-auto text-sm mt-2">{
+  "identity": "Devin AI",
+  "purpose": "Autonomous coding assistant",
+  "principles": ["Stepwise reasoning", "Security-first", "Transparency"],
+  "restrictions": ["Never expose secrets", "Never run destructive actions without confirmation"]
+}
+</pre>
+                  <pre class="bg-slate-800 text-yellow-200 rounded p-4 overflow-x-auto text-sm mt-2">{
+  "identity": "Manus Agent",
+  "purpose": "Multi-tool orchestrator",
+  "principles": ["Explicit tool use", "Iterative planning", "Rollback support"],
+  "restrictions": ["No direct file deletion", "Always log tool calls"]
+}
+</pre>
+                  <div class="mt-4 p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded">
+                    <strong>Best Practices:</strong>
+                    <ul class="list-disc ml-6 mt-2">
+                      <li>Define clear agent identity and purpose</li>
+                      <li>Explicitly list allowed tools and APIs</li>
+                      <li>Set strict boundaries for security and privacy</li>
+                      <li>Document fallback and error recovery strategies</li>
+                      <li>Enforce structured, scientific communication</li>
+                    </ul>
+                  </div>
+                </div>
+              </section>
+              <section id="patterns" class="mb-12">
+                <h2 class="text-2xl font-bold border-l-4 border-yellow-400 pl-3 mb-4">Prompt Patterns</h2>
+                <div class="prose prose-lg max-w-none bg-white rounded-lg shadow p-6 border border-slate-200">
+                  <h3 class="text-xl font-semibold mb-2">Interaction & Reasoning Patterns</h3>
+                  <p>Modern agents use explicit stepwise reasoning, modular tool calls, and feedback loops. Common
+                    patterns include:</p>
+                  <ul>
+                    <li><strong>Sequential Thinking:</strong> <code>&lt;sequential-thinking&gt;</code> blocks for
+                      explicit reasoning</li>
+                    <li><strong>Tool Call Schema:</strong> JSON/XML schemas for tool invocation</li>
+                    <li><strong>Fallback & Recovery:</strong> Policies for error handling and rollback</li>
+                    <li><strong>Multi-agent Orchestration:</strong> Dispatcher core for routing tasks</li>
+                  </ul>
+                  <div class="mt-4 p-4 bg-blue-50 border-l-4 border-blue-400 rounded">
+                    <strong>Example Sequential Reasoning:</strong>
+                    <pre class="bg-slate-800 text-yellow-200 rounded p-4 overflow-x-auto text-sm mt-2">{
   "step": 1,
   "thought": "Analyze the user request and decompose into subtasks",
   "tools": ["files", "shell", "notion"],
   "next": "Plan tool usage and execution order"
-}</code>
-          </li>
-          <li><b>Plan/Act Modes:</b> Separate planning from execution.<br>
-            <code class="block bg-slate-900 text-yellow-200 rounded p-2 my-2">&lt;plan_mode_respond&gt;
-  &lt;response&gt;Your response here&lt;/response&gt;
-&lt;/plan_mode_respond&gt;</code>
-          </li>
-          <li><b>Tool Schema Enforcement:</b> Always validate tool parameters and schemas before execution.</li>
-          <li><b>Security Boundaries:</b> Never expose secrets, always require confirmation for destructive actions.</li>
-          <li><b>Fallback & Recovery:</b> Define policies for error handling and rollback.</li>
-          <li><b>Multi-agent Orchestration:</b> Use dispatcher cores to route tasks to the best agent.</li>
-          <li><b>Memory & Context Management:</b> Save and update important context for continuity.</li>
-        </ul>
-        <div class="mt-6">
-          <h3 class="font-bold text-lg mb-2">Example: Tool Call in System Prompt</h3>
-          <code class="block bg-slate-900 text-yellow-200 rounded p-2 my-2">&lt;execute_command&gt;
-  &lt;command&gt;npm run dev&lt;/command&gt;
-  &lt;requires_approval&gt;false&lt;/requires_approval&gt;
-&lt;/execute_command&gt;</code>
-        </div>
-        <div class="mt-6">
-          <h3 class="font-bold text-lg mb-2">Example: Creating a New Task</h3>
-          <code class="block bg-slate-900 text-yellow-200 rounded p-2 my-2">&lt;new_task&gt;
-  &lt;context&gt;Implement refresh token and RBAC&lt;/context&gt;
-&lt;/new_task&gt;</code>
-        </div>
-      </div>
-    </section>
-    <section id="system-prompt" class="mb-16">
-      <div class="glass p-8 frame">
-        <h2 class="text-2xl font-bold section-title mb-4">System Prompt Example (XML)</h2>
-        <p class="mb-4">A real-world <code>&lt;system_prompt&gt;</code> for a secure, modular, and explicit agent:</p>
-        <pre class="bg-slate-900 text-yellow-200 rounded-lg p-4 overflow-x-auto text-sm mb-2"><code>&lt;system_prompt&gt;
-  &lt;identity&gt;BluMA Orchestrator&lt;/identity&gt;
-  &lt;purpose&gt;Autonomous LLM agent with modular tool orchestration and explicit reasoning&lt;/purpose&gt;
-  &lt;principles&gt;
-    &lt;item&gt;Stepwise reasoning&lt;/item&gt;
-    &lt;item&gt;Security-first&lt;/item&gt;
-    &lt;item&gt;Transparency&lt;/item&gt;
-    &lt;item&gt;Explicit tool invocation&lt;/item&gt;
-  &lt;/principles&gt;
-  &lt;tools&gt;
-    &lt;item&gt;Shell&lt;/item&gt;
-    &lt;item&gt;File System&lt;/item&gt;
-    &lt;item&gt;Web API&lt;/item&gt;
-  &lt;/tools&gt;
-  &lt;restrictions&gt;
-    &lt;item&gt;Never expose secrets&lt;/item&gt;
-    &lt;item&gt;Never execute destructive actions without confirmation&lt;/item&gt;
-    &lt;item&gt;Always validate tool schemas&lt;/item&gt;
-  &lt;/restrictions&gt;
-&lt;/system_prompt&gt;</code></pre>
-      </div>
-    </section>
-    <section id="python-llm-tool" class="mb-16">
-      <div class="glass p-8 frame relative">
-        <h2 class="text-2xl font-bold section-title mb-4">Python Example: LLM with Tool Calling</h2>
-        <p class="mb-4">This example demonstrates how to use OpenAI's function calling to enable an LLM to invoke a shell command as a tool. The script is fully functional and can be adapted for other tools or APIs.</p>
-        <button onclick="copyPythonCode()" class="code-copy-btn">Copy</button>
-        <pre class="bg-slate-900 text-yellow-200 rounded-lg p-4 overflow-x-auto text-xs mt-2 border border-yellow-300 shadow-inner"><code id="python-llm-example">import os
-import openai
-import subprocess
-from dotenv import load_dotenv
-
-load_dotenv()
-openai.api_key = os.getenv("OPENAI_API_KEY")
-
-functions = [
-    {
-        "name": "run_shell_command",
-        "description": "Run a shell command and return its output.",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "command": {"type": "string", "description": "The shell command to execute."}
-            },
-            "required": ["command"]
-        }
-    }
-]
-
-def run_shell_command(command: str) -> str:
-    try:
-        result = subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT, text=True, timeout=10)
-        return result.strip()
-    except Exception as e:
-        return f"Error: {e}"
-
-def main():
-    user_prompt = "List all files in the current directory."
-    messages = [
-        {"role": "system", "content": "You are an AI agent with access to a shell tool. Use the tool to answer user requests that require system access."},
-        {"role": "user", "content": user_prompt}
-    ]
-    response = openai.ChatCompletion.create(
-        model="gpt-4o",
-        messages=messages,
-        functions=functions,
-        function_call="auto"
-    )
-    message = response["choices"][0]["message"]
-    if message.get("function_call"):
-        func_name = message["function_call"]["name"]
-        args = eval(message["function_call"]["arguments"])
-        if func_name == "run_shell_command":
-            output = run_shell_command(args["command"])
-            print(f"\n[TOOL OUTPUT]\n{output}\n")
-        else:
-            print("Unknown tool requested.")
-    else:
-        print(message["content"])
-
-if __name__ == "__main__":
-    main()
+}
+</pre>
+                  </div>
+                </div>
+              </section>
+              <section id="tools" class="mb-12">
+                <h2 class="text-2xl font-bold border-l-4 border-yellow-400 pl-3 mb-4">Tools Integration</h2>
+                <div class="prose prose-lg max-w-none bg-white rounded-lg shadow p-6 border border-slate-200">
+                  <h3 class="text-xl font-semibold mb-2">Modular Tooling & Security</h3>
+                  <p>Agents integrate modular tools for file, shell, API, and external system access. Security is
+                    enforced by schemas, parameter validation, and explicit user confirmation for critical actions.</p>
+                  <ul>
+                    <li>Never expose secrets or credentials in tool calls</li>
+                    <li>Always validate parameters before execution</li>
+                    <li>Log all tool invocations for audit and debugging</li>
+                    <li>Design tools to be composable and isolated</li>
+                  </ul>
+                </div>
+              </section>
+              <section id="agents" class="mb-12">
+                <h2 class="text-2xl font-bold border-l-4 border-yellow-400 pl-3 mb-4">Agent Examples</h2>
+                <div class="prose prose-lg max-w-none bg-white rounded-lg shadow p-6 border border-slate-200">
+                  <h3 class="text-xl font-semibold mb-2">Real-World System Prompts</h3>
+                  <ul>
+                    <li><strong>BluMA:</strong> Autonomous dev agent with enforced tool boundaries and explicit notebook
+                      reasoning</li>
+                    <li><strong>Cursor:</strong> Editor agent with stepwise planning and code manipulation</li>
+                    <li><strong>Devin:</strong> Coding assistant with multi-step task decomposition and rollback</li>
+                    <li><strong>Manus:</strong> Multi-tool orchestrator with modular prompt structure</li>
+                    <li><strong>Same.dev:</strong> Security-focused agent with strict privacy policies</li>
+                  </ul>
+                  <div class="mt-4 p-4 bg-slate-100 border-l-4 border-slate-400 rounded">
+                    <strong>References:</strong>
+                    <ul class="list-disc ml-6 mt-2">
+                      <li><a href="https://arxiv.org/abs/2303.11366" class="text-blue-600 hover:underline">ReAct:
+                          Synergizing Reasoning and Acting in Language Models</a></li>
+                      <li><a
+                          href="https://github.com/openai/openai-cookbook/blob/main/examples/Function_calling_with_OpenAI_API.ipynb"
+                          class="text-blue-600 hover:underline">OpenAI Function Calling Cookbook</a></li>
+                      <li><a href="https://github.com/Significant-Gravitas/Auto-GPT"
+                          class="text-blue-600 hover:underline">Auto-GPT</a></li>
+                      <li><a href="https://github.com/microsoft/semantic-kernel"
+                          class="text-blue-600 hover:underline">Microsoft Semantic Kernel</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </section>
+              <section id="guides" class="mb-12">
+                <h2 class="text-2xl font-bold border-l-4 border-yellow-400 pl-3 mb-4">Guides & Templates</h2>
+                <div class="prose prose-lg max-w-none bg-white rounded-lg shadow p-6 border border-slate-200">
+                  <h3 class="text-xl font-semibold mb-2">How to Build Your Own Agent</h3>
+                  <ol class="list-decimal ml-6 mt-2">
+                    <li>Define agent identity, purpose, and boundaries in a system prompt</li>
+                    <li>List allowed tools and APIs with schemas</li>
+                    <li>Set up stepwise reasoning and feedback loops</li>
+                    <li>Implement security and logging for all tool calls</li>
+                    <li>Test, iterate, and document agent behavior</li>
+                  </ol>
+                  <div class="mt-4 p-4 bg-green-50 border-l-4 border-green-400 rounded">
+                    <strong>Template System Prompt:</strong>
+                    <pre class="bg-slate-800 text-yellow-200 rounded p-4 overflow-x-auto text-sm mt-2">{
+  "identity": "Your Agent Name",
+  "purpose": "Describe the agent's main goal",
+  "principles": ["Stepwise reasoning", "Security-first", "Transparency"],
+  "tools": ["Shell", "File System", "Web API"],
+  "restrictions": ["Never expose secrets", "Never execute destructive actions without confirmation"]
+}
+</pre>
+                  </div>
+                </div>
+              </section>
+              <section id="usecases" class="mb-12">
+                <h2 class="text-2xl font-bold border-l-4 border-yellow-400 pl-3 mb-4">Use Cases</h2>
+                <div class="prose prose-lg max-w-none bg-white rounded-lg shadow p-6 border border-slate-200">
+                  <h3 class="text-xl font-semibold mb-2">Applications of Agentic AI</h3>
+                  <ul>
+                    <li>Autonomous coding assistants</li>
+                    <li>Scientific research agents</li>
+                    <li>DevOps and infrastructure orchestration</li>
+                    <li>Personalized productivity tools</li>
+                    <li>Secure multi-agent systems</li>
+                  </ul>
+                </div>
+              </section>
+              <section id="references" class="mb-12">
+                <h2 class="text-2xl font-bold border-l-4 border-yellow-400 pl-3 mb-4">References</h2>
+                <div class="prose prose-lg max-w-none bg-white rounded-lg shadow p-6 border border-slate-200">
+                  <ul>
+                    <li><a href="https://arxiv.org/abs/2303.11366" class="text-blue-600 hover:underline">ReAct:
+                        Synergizing Reasoning and Acting in Language Models</a></li>
+                    <li><a
+                        href="https://github.com/openai/openai-cookbook/blob/main/examples/Function_calling_with_OpenAI_API.ipynb"
+                        class="text-blue-600 hover:underline">OpenAI Function Calling Cookbook</a></li>
+                    <li><a href="https://github.com/Significant-Gravitas/Auto-GPT"
+                        class="text-blue-600 hover:underline">Auto-GPT</a></li>
+                    <li><a href="https://github.com/microsoft/semantic-kernel"
+                        class="text-blue-600 hover:underline">Microsoft Semantic Kernel</a></li>
+                  </ul>
+                </div>
+              </section>
+              <section id="python-llm-tool" class="mb-12">
+                <h2 class="text-2xl font-bold border-l-4 border-yellow-400 pl-3 mb-4">Python Example: LLM with Tool
+                  Calling</h2>
+                <div class="prose prose-lg max-w-none bg-white rounded-lg shadow p-6 border border-slate-200">
+                  <h3 class="text-xl font-semibold mb-2">Functional Python Script</h3>
+                  <p>This example demonstrates how to use OpenAI's function calling to enable an LLM to invoke a shell
+                    command as a tool. The script is fully functional and can be adapted for other tools or APIs.</p>
+                  <pre class="bg-slate-800 text-yellow-200 rounded p-4 overflow-x-auto text-xs mt-2"><code>
+              import os
+              from openai import AzureOpenAI
+              import subprocess
+              from dotenv import load_dotenv
+              
+              load_dotenv()
+              
+              client = AzureOpenAI(
+                      azure_endpoint='<YOUR_ENDPOINT>', 
+                      api_key='YOUR_API_KEY',  
+                      api_version="2024-05-01-preview"
+                  )
+              
+              # Lista de comandos permitidos e seus aliases
+              ALLOWED_COMMANDS = {
+                  "python": ["python", "py", "python3"],
+                  "pip": ["pip", "pip3"],
+                  "dir": ["dir"],
+                  "echo": ["echo"],
+                  "type": ["type"],  # equivalente ao 'cat' no Windows
+                  "ver": ["ver"],    # versão do Windows
+                  "systeminfo": ["systeminfo"],
+                  "where": ["where"] # equivalente ao 'which' no Linux
+              }
+              
+              def is_command_allowed(command: str) -> bool:
+                  """Verifica se o comando é permitido."""
+                  # Pega o primeiro token como o comando principal
+                  cmd_parts = command.strip().split()
+                  if not cmd_parts:
+                      return False
+                  
+                  base_cmd = cmd_parts[0].lower()
+                  
+                  # Verifica se o comando está na lista de permitidos
+                  for allowed_variants in ALLOWED_COMMANDS.values():
+                      if base_cmd in allowed_variants:
+                          return True
+                  return False
+              
+              def sanitize_command(command: str) -> str:
+                  """Sanitiza o comando removendo caracteres e operadores perigosos."""
+                  dangerous_chars = ['&', '|', ';', '>', '<', '`', '$', '(', ')', '[', ']', '{', '}', '\\']
+                  sanitized = command
+                  for char in dangerous_chars:
+                      sanitized = sanitized.replace(char, '')
+                  return sanitized.strip()
+              
+              def run_shell_command(command: str, timeout: int = 30) -> str:
+                  """
+                  Executa um comando no terminal com validações de segurança.
+                  
+                  Args:
+                      command: O comando a ser executado
+                      timeout: Tempo máximo de execução em segundos (padrão: 30s)
+                  
+                  Returns:
+                      str: A saída do comando ou mensagem de erro
+                  """
+                  try:
+                      # Sanitiza e valida o comando
+                      sanitized_command = sanitize_command(command)
+                      if not is_command_allowed(sanitized_command):
+                          return f"Erro de segurança: Comando '{command}' não está na lista de comandos permitidos."
+                      
+                      # Executa o comando com timeout
+                      result = subprocess.check_output(
+                          sanitized_command,
+                          shell=True,
+                          stderr=subprocess.STDOUT,
+                          text=True,
+                          timeout=timeout
+                      )
+                      return result.strip()
+                  except subprocess.TimeoutExpired:
+                      return f"Erro: Comando excedeu o tempo limite de {timeout} segundos."
+                  except subprocess.CalledProcessError as e:
+                      return f"Erro ao executar comando: Código de saída {e.returncode}"
+                  except Exception as e:
+                      return f"Erro inesperado: {str(e)}"
+              
+              def list_files(timeout: int = 30) -> str:
+                  """
+                  Lista arquivos no diretório atual de forma segura.
+                  
+                  Args:
+                      timeout: Tempo máximo de execução em segundos (padrão: 30s)
+                  
+                  Returns:
+                      str: Lista de arquivos ou mensagem de erro
+                  """
+                  return run_shell_command("dir", timeout=timeout)
+              
+              tools = {
+                  "run_shell_command": {
+                      "name": "run_shell_command",
+                      "description": "Executa um comando no terminal Windows e retorna sua saída. Apenas comandos da lista de permitidos são aceitos.",
+                      "parameters": {
+                          "type": "object",
+                          "properties": {
+                              "command": {"type": "string", "description": "O comando a ser executado."},
+                              "timeout": {"type": "integer", "description": "Tempo máximo de execução em segundos (padrão: 30s)"}
+                          },
+                          "required": ["command"]
+                      },
+                      "function": run_shell_command
+                  },
+                  "list_files": {
+                      "name": "list_files",
+                      "description": "Lista arquivos no diretório atual usando o comando 'dir'.",
+                      "parameters": {
+                          "type": "object",
+                          "properties": {},
+                          "required": []
+                      },
+                      "function": list_files
+                  }
+              }
+              
+              class LLM:
+                  def __init__(self, client, tools):
+                      self.client = client
+                      self.tools = tools
+                      self.functions = [
+                          {
+                              "name": tool["name"],
+                              "description": tool["description"],
+                              "parameters": tool["parameters"]
+                          }
+                          for tool in tools.values()
+                      ]
+                  
+                  def run(self, messages):
+                      response = self.client.chat.completions.create(
+                          model="gpt-4o",
+                          messages=messages,
+                          functions=self.functions,
+                          function_call="auto"
+                      )
+                      
+                      message = response.choices[0].message
+                      
+                      if message.function_call:
+                          func_name = message.function_call.name
+                          if func_name in self.tools:
+                              try:
+                                  args = eval(message.function_call.arguments)
+                                  tool = self.tools[func_name]
+                                  if args:
+                                      result = tool["function"](args["command"])
+                                  else:
+                                      result = tool["function"]()
+                                  
+                                  # Adiciona o resultado da função ao contexto e pede interpretação
+                                  messages.append({
+                                      "role": "assistant",
+                                      "content": None,
+                                      "function_call": {
+                                          "name": func_name,
+                                          "arguments": message.function_call.arguments
+                                      }
+                                  })
+                                  messages.append({
+                                      "role": "function",
+                                      "name": func_name,
+                                      "content": result
+                                  })
+                                  return self.run(messages)
+                              except Exception as e:
+                                  return f"Erro ao executar {func_name}: {str(e)}"
+                          else:
+                              return f"Ferramenta desconhecida: {func_name}"
+                      else:
+                          return message.content
+              
+              def main():
+                  llm = LLM(client, tools)
+                  messages = [
+                      {
+                          "role": "system",
+                          "content": "Você é um assistente que pode executar comandos no Windows e interpretar seus resultados. Use as ferramentas disponíveis quando necessário."
+                      },
+                      {
+                          "role": "user",
+                          "content": "qual é a versão do python instalado na maquina ?"
+                      }
+                  ]
+                  
+                  result = llm.run(messages)
+                  print("\nResultado:")
+                  print(result)
+              
+              if __name__ == "__main__":
+                  main()
 </code></pre>
-        <script>
-          function copyPythonCode() {
-            const code = document.getElementById('python-llm-example').innerText;
-            navigator.clipboard.writeText(code).then(function() {
-              const btn = document.querySelector('.code-copy-btn');
-              btn.innerText = 'Copied!';
-              setTimeout(() => { btn.innerText = 'Copy'; }, 1500);
-            });
-          }
-        </script>
-        <div class="mt-4 p-4 bg-green-50 border-l-4 border-green-400 rounded">
-          <strong>How it works:</strong>
-          <ul class="list-disc ml-6 mt-2">
-            <li>Defines a tool schema for shell command execution</li>
-            <li>Lets the LLM decide when to call the tool</li>
-            <li>Executes the command and returns the output to the LLM</li>
-            <li>Can be extended for any tool or API (file, web, database, etc.)</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-    <section id="sections" class="mb-16">
-      <div class="glass p-8 frame">
-        <h2 class="text-2xl font-bold section-title mb-4">All Sections</h2>
-        <ul class="list-disc ml-8 text-lg mb-4">
-          <li>Introduction</li>
-          <li>LLM & Function Calling</li>
-          <li>System Prompts</li>
-          <li>Prompt Patterns</li>
-          <li>Tools Integration</li>
-          <li>Agent Examples</li>
-          <li>Guides & Templates</li>
-          <li>Use Cases</li>
-          <li>References</li>
-        </ul>
-        <p class="text-slate-700">All original content, examples, and best practices are preserved and visually enhanced in this new layout.</p>
-      </div>
-    </section>
-  </div>
-</body>
-</html>
+                  <div class="mt-4 p-4 bg-green-50 border-l-4 border-green-400 rounded">
+                    <strong>How it works:</strong>
+                    <ul class="list-disc ml-6 mt-2">
+                      <li>Defines a tool schema for shell command execution</li>
+                      <li>Lets the LLM decide when to call the tool</li>
+                      <li>Executes the command and returns the output to the LLM</li>
+                      <li>Can be extended for any tool or API (file, web, database, etc.)</li>
+                    </ul>
+                  </div>
+                </div>
+              </section>
